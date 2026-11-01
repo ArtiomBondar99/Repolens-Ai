@@ -2,6 +2,9 @@ import { Module } from '@nestjs/common';
 import { createObserveModule } from '@nestjs/observe';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { HealthModule } from './health/health.module';
+import { GithubModule } from './github/github.module';
+import { PrismaModule } from './prisma/prisma.module';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
@@ -14,6 +17,9 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
       appSecret: 'YOUR_APP_SECRET',
       serviceId: 'backend',
     }),
+    HealthModule,
+    GithubModule,
+    PrismaModule,
   ],
   controllers: [AppController],
   providers: [AppService],
