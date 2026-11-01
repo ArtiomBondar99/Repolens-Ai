@@ -16,7 +16,8 @@ exports.GithubModule = GithubModule;
 exports.GithubModule = GithubModule = __decorate([
     (0, common_1.Module)({
         controllers: [github_controller_1.GithubController],
-        providers: [github_service_1.GithubService]
+        providers: [github_service_1.GithubService],
+        exports: [github_service_1.GithubService],
     })
 ], GithubModule);
 //# sourceMappingURL=github.module.js.map

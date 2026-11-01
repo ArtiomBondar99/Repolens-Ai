@@ -41,6 +41,7 @@ let GithubService = class GithubService {
             url: data.html_url,
             language: data.language,
             stars: data.stargazers_count,
+            defaultBranch: data.default_branch,
         };
     }
     async getRepositoryTree(owner, repo) {

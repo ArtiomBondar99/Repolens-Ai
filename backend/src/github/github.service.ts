@@ -13,6 +13,7 @@ interface GithubRepository {
   html_url: string;
   language: string | null;
   stargazers_count: number;
+  default_branch: string;
 }
 
 interface GithubTreeItem {
@@ -75,6 +76,7 @@ export class GithubService {
       url: data.html_url,
       language: data.language,
       stars: data.stargazers_count,
+      defaultBranch: data.default_branch,
     };
   }
 

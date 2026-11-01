@@ -14,6 +14,9 @@ const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const health_module_1 = require("./health/health.module");
 const github_module_1 = require("./github/github.module");
+const prisma_module_1 = require("./prisma/prisma.module");
+const config_1 = require("@nestjs/config");
+const repositories_module_1 = require("./repositories/repositories.module");
 _a = (0, observe_1.createObserveModule)(), exports.ObserveModule = _a.ObserveModule, exports.ObserveInstrument = _a.ObserveInstrument;
 let AppModule = class AppModule {
 };
@@ -21,6 +24,9 @@ exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
+            config_1.ConfigModule.forRoot({
+                isGlobal: true,
+            }),
             exports.ObserveModule.forRoot({
                 appKey: 'YOUR_APP_KEY',
                 appSecret: 'YOUR_APP_SECRET',
@@ -28,6 +34,8 @@ exports.AppModule = AppModule = __decorate([
             }),
             health_module_1.HealthModule,
             github_module_1.GithubModule,
+            prisma_module_1.PrismaModule,
+            repositories_module_1.RepositoriesModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

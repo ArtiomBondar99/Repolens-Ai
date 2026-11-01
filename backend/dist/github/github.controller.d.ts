@@ -9,6 +9,7 @@ export declare class GithubController {
         url: string;
         language: string | null;
         stars: number;
+        defaultBranch: string;
     }>;
     getRepositoryTree(owner: string, repo: string): Promise<{
         repository: string;
