@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
   ValidationPipe,
 } from '@nestjs/common';
@@ -30,6 +31,22 @@ export class RepositoriesController {
     return this.repositoriesService.saveRepository(
       body.owner,
       body.repo,
+    );
+  }
+
+  @Post(':id/sync')
+  syncRepositoryFiles(@Param('id') repositoryId: string) {
+    return this.repositoriesService.syncRepositoryFiles(repositoryId);
+  }
+
+  @Get(':id/files/:fileId/content')
+  getFileContent(
+    @Param('id') repositoryId: string,
+    @Param('fileId') fileId: string,
+  ) {
+    return this.repositoriesService.getFileContent(
+      repositoryId,
+      fileId,
     );
   }
 }

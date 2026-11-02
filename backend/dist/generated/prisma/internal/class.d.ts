@@ -33,5 +33,8 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
     get repository(): Prisma.RepositoryDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;
+    get repositoryFile(): Prisma.RepositoryFileDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
 }
 export declare function getPrismaClientClass(): PrismaClientConstructor;

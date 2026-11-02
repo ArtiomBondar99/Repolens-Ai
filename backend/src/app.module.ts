@@ -7,6 +7,7 @@ import { GithubModule } from './github/github.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { ConfigModule } from '@nestjs/config';
 import { RepositoriesModule } from './repositories/repositories.module';
+import { IndexingModule } from './indexing/indexing.module';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
@@ -26,6 +27,7 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
     GithubModule,
     PrismaModule,
     RepositoriesModule,
+    IndexingModule,
   ],
   controllers: [AppController],
   providers: [AppService],

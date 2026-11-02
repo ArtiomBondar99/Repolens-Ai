@@ -33,7 +33,7 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.QueryMode = exports.SortOrder = exports.RepositoryScalarFieldEnum = exports.TransactionIsolationLevel = exports.ModelName = exports.AnyNull = exports.JsonNull = exports.DbNull = exports.NullTypes = exports.Decimal = void 0;
+exports.NullsOrder = exports.QueryMode = exports.SortOrder = exports.RepositoryFileScalarFieldEnum = exports.RepositoryScalarFieldEnum = exports.TransactionIsolationLevel = exports.ModelName = exports.AnyNull = exports.JsonNull = exports.DbNull = exports.NullTypes = exports.Decimal = void 0;
 const runtime = __importStar(require("@prisma/client/runtime/index-browser"));
 exports.Decimal = runtime.Decimal;
 exports.NullTypes = {
@@ -45,7 +45,8 @@ exports.DbNull = runtime.DbNull;
 exports.JsonNull = runtime.JsonNull;
 exports.AnyNull = runtime.AnyNull;
 exports.ModelName = {
-    Repository: 'Repository'
+    Repository: 'Repository',
+    RepositoryFile: 'RepositoryFile'
 };
 exports.TransactionIsolationLevel = runtime.makeStrictEnum({
     ReadUncommitted: 'ReadUncommitted',
@@ -63,6 +64,14 @@ exports.RepositoryScalarFieldEnum = {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
 };
+exports.RepositoryFileScalarFieldEnum = {
+    id: 'id',
+    repositoryId: 'repositoryId',
+    path: 'path',
+    sha: 'sha',
+    size: 'size',
+    createdAt: 'createdAt'
+};
 exports.SortOrder = {
     asc: 'asc',
     desc: 'desc'
@@ -70,5 +79,9 @@ exports.SortOrder = {
 exports.QueryMode = {
     default: 'default',
     insensitive: 'insensitive'
+};
+exports.NullsOrder = {
+    first: 'first',
+    last: 'last'
 };
 //# sourceMappingURL=prismaNamespaceBrowser.js.map

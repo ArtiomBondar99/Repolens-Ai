@@ -12,6 +12,7 @@ export declare const JsonNull: import("@prisma/client-runtime-utils").JsonNullCl
 export declare const AnyNull: import("@prisma/client-runtime-utils").AnyNullClass;
 export declare const ModelName: {
     readonly Repository: "Repository";
+    readonly RepositoryFile: "RepositoryFile";
 };
 export type ModelName = (typeof ModelName)[keyof typeof ModelName];
 export declare const TransactionIsolationLevel: {
@@ -32,6 +33,15 @@ export declare const RepositoryScalarFieldEnum: {
     readonly updatedAt: "updatedAt";
 };
 export type RepositoryScalarFieldEnum = (typeof RepositoryScalarFieldEnum)[keyof typeof RepositoryScalarFieldEnum];
+export declare const RepositoryFileScalarFieldEnum: {
+    readonly id: "id";
+    readonly repositoryId: "repositoryId";
+    readonly path: "path";
+    readonly sha: "sha";
+    readonly size: "size";
+    readonly createdAt: "createdAt";
+};
+export type RepositoryFileScalarFieldEnum = (typeof RepositoryFileScalarFieldEnum)[keyof typeof RepositoryFileScalarFieldEnum];
 export declare const SortOrder: {
     readonly asc: "asc";
     readonly desc: "desc";
@@ -42,3 +52,8 @@ export declare const QueryMode: {
     readonly insensitive: "insensitive";
 };
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode];
+export declare const NullsOrder: {
+    readonly first: "first";
+    readonly last: "last";
+};
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder];

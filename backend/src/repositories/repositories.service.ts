@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { GithubService } from '../github/github.service';
 import { PrismaService } from '../prisma/prisma.service';
 
@@ -39,5 +39,82 @@ export class RepositoriesService {
         createdAt: 'desc',
       },
     });
+  }
+
+  async syncRepositoryFiles(repositoryId: string) {
+    const repository = await this.prisma.repository.findUnique({
+      where: {
+        id: repositoryId,
+      },
+    });
+
+    if (!repository) {
+      throw new NotFoundException('Repository not found');
+    }
+
+    const tree = await this.githubService.getRepositoryTree(
+      repository.owner,
+      repository.name,
+    );
+
+    const files = tree.files;
+
+    const result = await this.prisma.$transaction(async (tx) => {
+      await tx.repositoryFile.deleteMany({
+        where: {
+          repositoryId: repository.id,
+        },
+      });
+
+      await tx.repositoryFile.createMany({
+        data: files.map((file) => ({
+          repositoryId: repository.id,
+          path: file.path,
+          sha: file.sha,
+          size: file.size,
+        })),
+      });
+
+      return tx.repositoryFile.count({
+        where: {
+          repositoryId: repository.id,
+        },
+      });
+    });
+
+    return {
+      repository: repository.fullName,
+      syncedFiles: result,
+    };
+  }
+
+  async getFileContent(repositoryId: string, fileId: string) {
+    const file = await this.prisma.repositoryFile.findFirst({
+      where: {
+        id: fileId,
+        repositoryId,
+      },
+      include: {
+        repository: true,
+      },
+    });
+
+    if (!file) {
+      throw new NotFoundException('File not found');
+    }
+
+    const blob = await this.githubService.getFileContent(
+      file.repository.owner,
+      file.repository.name,
+      file.sha,
+    );
+
+    return {
+      repository: file.repository.fullName,
+      path: file.path,
+      sha: blob.sha,
+      size: blob.size,
+      content: blob.content,
+    };
   }
 }

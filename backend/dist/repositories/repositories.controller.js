@@ -27,6 +27,12 @@ let RepositoriesController = class RepositoriesController {
     saveRepository(body) {
         return this.repositoriesService.saveRepository(body.owner, body.repo);
     }
+    syncRepositoryFiles(repositoryId) {
+        return this.repositoriesService.syncRepositoryFiles(repositoryId);
+    }
+    getFileContent(repositoryId, fileId) {
+        return this.repositoriesService.getFileContent(repositoryId, fileId);
+    }
 };
 exports.RepositoriesController = RepositoriesController;
 __decorate([
@@ -45,6 +51,21 @@ __decorate([
     __metadata("design:paramtypes", [create_repository_dto_1.CreateRepositoryDto]),
     __metadata("design:returntype", void 0)
 ], RepositoriesController.prototype, "saveRepository", null);
+__decorate([
+    (0, common_1.Post)(':id/sync'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], RepositoriesController.prototype, "syncRepositoryFiles", null);
+__decorate([
+    (0, common_1.Get)(':id/files/:fileId/content'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Param)('fileId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", void 0)
+], RepositoriesController.prototype, "getFileContent", null);
 exports.RepositoriesController = RepositoriesController = __decorate([
     (0, common_1.Controller)('repositories'),
     __metadata("design:paramtypes", [repositories_service_1.RepositoriesService])

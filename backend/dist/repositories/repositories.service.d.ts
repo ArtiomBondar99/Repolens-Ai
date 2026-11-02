@@ -24,4 +24,15 @@ export declare class RepositoriesService {
         createdAt: Date;
         updatedAt: Date;
     }[]>;
+    syncRepositoryFiles(repositoryId: string): Promise<{
+        repository: string;
+        syncedFiles: number;
+    }>;
+    getFileContent(repositoryId: string, fileId: string): Promise<{
+        repository: string;
+        path: string;
+        sha: string;
+        size: number;
+        content: string;
+    }>;
 }

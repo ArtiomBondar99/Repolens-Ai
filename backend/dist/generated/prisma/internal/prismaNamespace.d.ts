@@ -161,6 +161,7 @@ export type FieldRef<Model, FieldType> = runtime.FieldRef<Model, FieldType>;
 type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRef<Model, FieldType>;
 export declare const ModelName: {
     readonly Repository: "Repository";
+    readonly RepositoryFile: "RepositoryFile";
 };
 export type ModelName = (typeof ModelName)[keyof typeof ModelName];
 export interface TypeMapCb<GlobalOmitOptions = {}> extends runtime.Types.Utils.Fn<{
@@ -173,7 +174,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         omit: GlobalOmitOptions;
     };
     meta: {
-        modelProps: "repository";
+        modelProps: "repository" | "repositoryFile";
         txIsolationLevel: TransactionIsolationLevel;
     };
     model: {
@@ -251,6 +252,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
                 };
             };
         };
+        RepositoryFile: {
+            payload: Prisma.$RepositoryFilePayload<ExtArgs>;
+            fields: Prisma.RepositoryFileFieldRefs;
+            operations: {
+                findUnique: {
+                    args: Prisma.RepositoryFileFindUniqueArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$RepositoryFilePayload> | null;
+                };
+                findUniqueOrThrow: {
+                    args: Prisma.RepositoryFileFindUniqueOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$RepositoryFilePayload>;
+                };
+                findFirst: {
+                    args: Prisma.RepositoryFileFindFirstArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$RepositoryFilePayload> | null;
+                };
+                findFirstOrThrow: {
+                    args: Prisma.RepositoryFileFindFirstOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$RepositoryFilePayload>;
+                };
+                findMany: {
+                    args: Prisma.RepositoryFileFindManyArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$RepositoryFilePayload>[];
+                };
+                create: {
+                    args: Prisma.RepositoryFileCreateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$RepositoryFilePayload>;
+                };
+                createMany: {
+                    args: Prisma.RepositoryFileCreateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                createManyAndReturn: {
+                    args: Prisma.RepositoryFileCreateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$RepositoryFilePayload>[];
+                };
+                delete: {
+                    args: Prisma.RepositoryFileDeleteArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$RepositoryFilePayload>;
+                };
+                update: {
+                    args: Prisma.RepositoryFileUpdateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$RepositoryFilePayload>;
+                };
+                deleteMany: {
+                    args: Prisma.RepositoryFileDeleteManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateMany: {
+                    args: Prisma.RepositoryFileUpdateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateManyAndReturn: {
+                    args: Prisma.RepositoryFileUpdateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$RepositoryFilePayload>[];
+                };
+                upsert: {
+                    args: Prisma.RepositoryFileUpsertArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$RepositoryFilePayload>;
+                };
+                aggregate: {
+                    args: Prisma.RepositoryFileAggregateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AggregateRepositoryFile>;
+                };
+                groupBy: {
+                    args: Prisma.RepositoryFileGroupByArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.RepositoryFileGroupByOutputType>[];
+                };
+                count: {
+                    args: Prisma.RepositoryFileCountArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.RepositoryFileCountAggregateOutputType> | number;
+                };
+            };
+        };
     };
 } & {
     other: {
@@ -293,6 +368,15 @@ export declare const RepositoryScalarFieldEnum: {
     readonly updatedAt: "updatedAt";
 };
 export type RepositoryScalarFieldEnum = (typeof RepositoryScalarFieldEnum)[keyof typeof RepositoryScalarFieldEnum];
+export declare const RepositoryFileScalarFieldEnum: {
+    readonly id: "id";
+    readonly repositoryId: "repositoryId";
+    readonly path: "path";
+    readonly sha: "sha";
+    readonly size: "size";
+    readonly createdAt: "createdAt";
+};
+export type RepositoryFileScalarFieldEnum = (typeof RepositoryFileScalarFieldEnum)[keyof typeof RepositoryFileScalarFieldEnum];
 export declare const SortOrder: {
     readonly asc: "asc";
     readonly desc: "desc";
@@ -303,12 +387,19 @@ export declare const QueryMode: {
     readonly insensitive: "insensitive";
 };
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode];
+export declare const NullsOrder: {
+    readonly first: "first";
+    readonly last: "last";
+};
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder];
 export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String'>;
 export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String[]'>;
 export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>;
 export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>;
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>;
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>;
+export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>;
+export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>;
 export type BatchPayload = {
     count: number;
 };
@@ -338,6 +429,7 @@ export interface PrismaClientOptionsWithAdapter extends PrismaClientBaseOptions 
 export type PrismaClientOptions = PrismaClientOptionsWithAccelerateUrl | PrismaClientOptionsWithAdapter;
 export type GlobalOmitConfig = {
     repository?: Prisma.RepositoryOmit;
+    repositoryFile?: Prisma.RepositoryFileOmit;
 };
 export type LogLevel = 'info' | 'query' | 'warn' | 'error';
 export type LogDefinition = {

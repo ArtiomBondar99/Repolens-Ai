@@ -120,6 +120,7 @@ export type RepositoryWhereInput = {
     defaultBranch?: Prisma.StringFilter<"Repository"> | string;
     createdAt?: Prisma.DateTimeFilter<"Repository"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Repository"> | Date | string;
+    files?: Prisma.RepositoryFileListRelationFilter;
 };
 export type RepositoryOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -130,6 +131,7 @@ export type RepositoryOrderByWithRelationInput = {
     defaultBranch?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
+    files?: Prisma.RepositoryFileOrderByRelationAggregateInput;
 };
 export type RepositoryWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -143,6 +145,7 @@ export type RepositoryWhereUniqueInput = Prisma.AtLeast<{
     defaultBranch?: Prisma.StringFilter<"Repository"> | string;
     createdAt?: Prisma.DateTimeFilter<"Repository"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Repository"> | Date | string;
+    files?: Prisma.RepositoryFileListRelationFilter;
 }, "id" | "fullName">;
 export type RepositoryOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -179,6 +182,7 @@ export type RepositoryCreateInput = {
     defaultBranch: string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    files?: Prisma.RepositoryFileCreateNestedManyWithoutRepositoryInput;
 };
 export type RepositoryUncheckedCreateInput = {
     id?: string;
@@ -189,6 +193,7 @@ export type RepositoryUncheckedCreateInput = {
     defaultBranch: string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    files?: Prisma.RepositoryFileUncheckedCreateNestedManyWithoutRepositoryInput;
 };
 export type RepositoryUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -199,6 +204,7 @@ export type RepositoryUpdateInput = {
     defaultBranch?: Prisma.StringFieldUpdateOperationsInput | string;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    files?: Prisma.RepositoryFileUpdateManyWithoutRepositoryNestedInput;
 };
 export type RepositoryUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -209,6 +215,7 @@ export type RepositoryUncheckedUpdateInput = {
     defaultBranch?: Prisma.StringFieldUpdateOperationsInput | string;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    files?: Prisma.RepositoryFileUncheckedUpdateManyWithoutRepositoryNestedInput;
 };
 export type RepositoryCreateManyInput = {
     id?: string;
@@ -270,11 +277,92 @@ export type RepositoryMinOrderByAggregateInput = {
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
 };
+export type RepositoryScalarRelationFilter = {
+    is?: Prisma.RepositoryWhereInput;
+    isNot?: Prisma.RepositoryWhereInput;
+};
 export type StringFieldUpdateOperationsInput = {
     set?: string;
 };
 export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string;
+};
+export type RepositoryCreateNestedOneWithoutFilesInput = {
+    create?: Prisma.XOR<Prisma.RepositoryCreateWithoutFilesInput, Prisma.RepositoryUncheckedCreateWithoutFilesInput>;
+    connectOrCreate?: Prisma.RepositoryCreateOrConnectWithoutFilesInput;
+    connect?: Prisma.RepositoryWhereUniqueInput;
+};
+export type RepositoryUpdateOneRequiredWithoutFilesNestedInput = {
+    create?: Prisma.XOR<Prisma.RepositoryCreateWithoutFilesInput, Prisma.RepositoryUncheckedCreateWithoutFilesInput>;
+    connectOrCreate?: Prisma.RepositoryCreateOrConnectWithoutFilesInput;
+    upsert?: Prisma.RepositoryUpsertWithoutFilesInput;
+    connect?: Prisma.RepositoryWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.RepositoryUpdateToOneWithWhereWithoutFilesInput, Prisma.RepositoryUpdateWithoutFilesInput>, Prisma.RepositoryUncheckedUpdateWithoutFilesInput>;
+};
+export type RepositoryCreateWithoutFilesInput = {
+    id?: string;
+    owner: string;
+    name: string;
+    fullName: string;
+    url: string;
+    defaultBranch: string;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+};
+export type RepositoryUncheckedCreateWithoutFilesInput = {
+    id?: string;
+    owner: string;
+    name: string;
+    fullName: string;
+    url: string;
+    defaultBranch: string;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+};
+export type RepositoryCreateOrConnectWithoutFilesInput = {
+    where: Prisma.RepositoryWhereUniqueInput;
+    create: Prisma.XOR<Prisma.RepositoryCreateWithoutFilesInput, Prisma.RepositoryUncheckedCreateWithoutFilesInput>;
+};
+export type RepositoryUpsertWithoutFilesInput = {
+    update: Prisma.XOR<Prisma.RepositoryUpdateWithoutFilesInput, Prisma.RepositoryUncheckedUpdateWithoutFilesInput>;
+    create: Prisma.XOR<Prisma.RepositoryCreateWithoutFilesInput, Prisma.RepositoryUncheckedCreateWithoutFilesInput>;
+    where?: Prisma.RepositoryWhereInput;
+};
+export type RepositoryUpdateToOneWithWhereWithoutFilesInput = {
+    where?: Prisma.RepositoryWhereInput;
+    data: Prisma.XOR<Prisma.RepositoryUpdateWithoutFilesInput, Prisma.RepositoryUncheckedUpdateWithoutFilesInput>;
+};
+export type RepositoryUpdateWithoutFilesInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    owner?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    fullName?: Prisma.StringFieldUpdateOperationsInput | string;
+    url?: Prisma.StringFieldUpdateOperationsInput | string;
+    defaultBranch?: Prisma.StringFieldUpdateOperationsInput | string;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type RepositoryUncheckedUpdateWithoutFilesInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    owner?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    fullName?: Prisma.StringFieldUpdateOperationsInput | string;
+    url?: Prisma.StringFieldUpdateOperationsInput | string;
+    defaultBranch?: Prisma.StringFieldUpdateOperationsInput | string;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type RepositoryCountOutputType = {
+    files: number;
+};
+export type RepositoryCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    files?: boolean | RepositoryCountOutputTypeCountFilesArgs;
+};
+export type RepositoryCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.RepositoryCountOutputTypeSelect<ExtArgs> | null;
+};
+export type RepositoryCountOutputTypeCountFilesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.RepositoryFileWhereInput;
 };
 export type RepositorySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -285,6 +373,8 @@ export type RepositorySelect<ExtArgs extends runtime.Types.Extensions.InternalAr
     defaultBranch?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
+    files?: boolean | Prisma.Repository$filesArgs<ExtArgs>;
+    _count?: boolean | Prisma.RepositoryCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["repository"]>;
 export type RepositorySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -317,9 +407,17 @@ export type RepositorySelectScalar = {
     updatedAt?: boolean;
 };
 export type RepositoryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "owner" | "name" | "fullName" | "url" | "defaultBranch" | "createdAt" | "updatedAt", ExtArgs["result"]["repository"]>;
+export type RepositoryInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    files?: boolean | Prisma.Repository$filesArgs<ExtArgs>;
+    _count?: boolean | Prisma.RepositoryCountOutputTypeDefaultArgs<ExtArgs>;
+};
+export type RepositoryIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {};
+export type RepositoryIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {};
 export type $RepositoryPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     name: "Repository";
-    objects: {};
+    objects: {
+        files: Prisma.$RepositoryFilePayload<ExtArgs>[];
+    };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
         owner: string;
@@ -381,6 +479,7 @@ export interface RepositoryDelegate<ExtArgs extends runtime.Types.Extensions.Int
 }
 export interface Prisma__RepositoryClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise";
+    files<T extends Prisma.Repository$filesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Repository$filesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RepositoryFilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): runtime.Types.Utils.JsPromise<TResult1 | TResult2>;
     catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): runtime.Types.Utils.JsPromise<T | TResult>;
     finally(onfinally?: (() => void) | undefined | null): runtime.Types.Utils.JsPromise<T>;
@@ -398,16 +497,19 @@ export interface RepositoryFieldRefs {
 export type RepositoryFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.RepositorySelect<ExtArgs> | null;
     omit?: Prisma.RepositoryOmit<ExtArgs> | null;
+    include?: Prisma.RepositoryInclude<ExtArgs> | null;
     where: Prisma.RepositoryWhereUniqueInput;
 };
 export type RepositoryFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.RepositorySelect<ExtArgs> | null;
     omit?: Prisma.RepositoryOmit<ExtArgs> | null;
+    include?: Prisma.RepositoryInclude<ExtArgs> | null;
     where: Prisma.RepositoryWhereUniqueInput;
 };
 export type RepositoryFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.RepositorySelect<ExtArgs> | null;
     omit?: Prisma.RepositoryOmit<ExtArgs> | null;
+    include?: Prisma.RepositoryInclude<ExtArgs> | null;
     where?: Prisma.RepositoryWhereInput;
     orderBy?: Prisma.RepositoryOrderByWithRelationInput | Prisma.RepositoryOrderByWithRelationInput[];
     cursor?: Prisma.RepositoryWhereUniqueInput;
@@ -418,6 +520,7 @@ export type RepositoryFindFirstArgs<ExtArgs extends runtime.Types.Extensions.Int
 export type RepositoryFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.RepositorySelect<ExtArgs> | null;
     omit?: Prisma.RepositoryOmit<ExtArgs> | null;
+    include?: Prisma.RepositoryInclude<ExtArgs> | null;
     where?: Prisma.RepositoryWhereInput;
     orderBy?: Prisma.RepositoryOrderByWithRelationInput | Prisma.RepositoryOrderByWithRelationInput[];
     cursor?: Prisma.RepositoryWhereUniqueInput;
@@ -428,6 +531,7 @@ export type RepositoryFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensi
 export type RepositoryFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.RepositorySelect<ExtArgs> | null;
     omit?: Prisma.RepositoryOmit<ExtArgs> | null;
+    include?: Prisma.RepositoryInclude<ExtArgs> | null;
     where?: Prisma.RepositoryWhereInput;
     orderBy?: Prisma.RepositoryOrderByWithRelationInput | Prisma.RepositoryOrderByWithRelationInput[];
     cursor?: Prisma.RepositoryWhereUniqueInput;
@@ -438,6 +542,7 @@ export type RepositoryFindManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
 export type RepositoryCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.RepositorySelect<ExtArgs> | null;
     omit?: Prisma.RepositoryOmit<ExtArgs> | null;
+    include?: Prisma.RepositoryInclude<ExtArgs> | null;
     data: Prisma.XOR<Prisma.RepositoryCreateInput, Prisma.RepositoryUncheckedCreateInput>;
 };
 export type RepositoryCreateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -453,6 +558,7 @@ export type RepositoryCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Exte
 export type RepositoryUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.RepositorySelect<ExtArgs> | null;
     omit?: Prisma.RepositoryOmit<ExtArgs> | null;
+    include?: Prisma.RepositoryInclude<ExtArgs> | null;
     data: Prisma.XOR<Prisma.RepositoryUpdateInput, Prisma.RepositoryUncheckedUpdateInput>;
     where: Prisma.RepositoryWhereUniqueInput;
 };
@@ -471,6 +577,7 @@ export type RepositoryUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Exte
 export type RepositoryUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.RepositorySelect<ExtArgs> | null;
     omit?: Prisma.RepositoryOmit<ExtArgs> | null;
+    include?: Prisma.RepositoryInclude<ExtArgs> | null;
     where: Prisma.RepositoryWhereUniqueInput;
     create: Prisma.XOR<Prisma.RepositoryCreateInput, Prisma.RepositoryUncheckedCreateInput>;
     update: Prisma.XOR<Prisma.RepositoryUpdateInput, Prisma.RepositoryUncheckedUpdateInput>;
@@ -478,13 +585,26 @@ export type RepositoryUpsertArgs<ExtArgs extends runtime.Types.Extensions.Intern
 export type RepositoryDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.RepositorySelect<ExtArgs> | null;
     omit?: Prisma.RepositoryOmit<ExtArgs> | null;
+    include?: Prisma.RepositoryInclude<ExtArgs> | null;
     where: Prisma.RepositoryWhereUniqueInput;
 };
 export type RepositoryDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     where?: Prisma.RepositoryWhereInput;
     limit?: number;
 };
+export type Repository$filesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.RepositoryFileSelect<ExtArgs> | null;
+    omit?: Prisma.RepositoryFileOmit<ExtArgs> | null;
+    include?: Prisma.RepositoryFileInclude<ExtArgs> | null;
+    where?: Prisma.RepositoryFileWhereInput;
+    orderBy?: Prisma.RepositoryFileOrderByWithRelationInput | Prisma.RepositoryFileOrderByWithRelationInput[];
+    cursor?: Prisma.RepositoryFileWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.RepositoryFileScalarFieldEnum | Prisma.RepositoryFileScalarFieldEnum[];
+};
 export type RepositoryDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.RepositorySelect<ExtArgs> | null;
     omit?: Prisma.RepositoryOmit<ExtArgs> | null;
+    include?: Prisma.RepositoryInclude<ExtArgs> | null;
 };
