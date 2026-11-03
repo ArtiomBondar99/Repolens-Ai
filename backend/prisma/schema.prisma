@@ -35,6 +35,22 @@ model RepositoryFile {
   size         Int?
   createdAt    DateTime   @default(now())
 
+  chunks CodeChunk[]
+
   @@unique([repositoryId, path])
   @@index([repositoryId])
+}
+
+model CodeChunk {
+  id               String         @id @default(uuid())
+  repositoryFileId String
+  repositoryFile   RepositoryFile @relation(fields: [repositoryFileId], references: [id], onDelete: Cascade)
+  chunkIndex       Int
+  content          String
+  startLine        Int
+  endLine          Int
+  createdAt        DateTime       @default(now())
+
+  @@unique([repositoryFileId, chunkIndex])
+  @@index([repositoryFileId])
 }

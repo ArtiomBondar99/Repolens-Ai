@@ -13,6 +13,7 @@ export declare const AnyNull: import("@prisma/client-runtime-utils").AnyNullClas
 export declare const ModelName: {
     readonly Repository: "Repository";
     readonly RepositoryFile: "RepositoryFile";
+    readonly CodeChunk: "CodeChunk";
 };
 export type ModelName = (typeof ModelName)[keyof typeof ModelName];
 export declare const TransactionIsolationLevel: {
@@ -42,6 +43,16 @@ export declare const RepositoryFileScalarFieldEnum: {
     readonly createdAt: "createdAt";
 };
 export type RepositoryFileScalarFieldEnum = (typeof RepositoryFileScalarFieldEnum)[keyof typeof RepositoryFileScalarFieldEnum];
+export declare const CodeChunkScalarFieldEnum: {
+    readonly id: "id";
+    readonly repositoryFileId: "repositoryFileId";
+    readonly chunkIndex: "chunkIndex";
+    readonly content: "content";
+    readonly startLine: "startLine";
+    readonly endLine: "endLine";
+    readonly createdAt: "createdAt";
+};
+export type CodeChunkScalarFieldEnum = (typeof CodeChunkScalarFieldEnum)[keyof typeof CodeChunkScalarFieldEnum];
 export declare const SortOrder: {
     readonly asc: "asc";
     readonly desc: "desc";

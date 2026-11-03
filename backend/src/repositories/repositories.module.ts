@@ -8,5 +8,6 @@ import { PrismaModule } from '../prisma/prisma.module';
   imports: [GithubModule, PrismaModule],
   controllers: [RepositoriesController],
   providers: [RepositoriesService],
+  exports: [RepositoriesService],
 })
 export class RepositoriesModule { }

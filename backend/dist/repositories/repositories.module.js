@@ -20,6 +20,7 @@ exports.RepositoriesModule = RepositoriesModule = __decorate([
         imports: [github_module_1.GithubModule, prisma_module_1.PrismaModule],
         controllers: [repositories_controller_1.RepositoriesController],
         providers: [repositories_service_1.RepositoriesService],
+        exports: [repositories_service_1.RepositoriesService],
     })
 ], RepositoriesModule);
 //# sourceMappingURL=repositories.module.js.map

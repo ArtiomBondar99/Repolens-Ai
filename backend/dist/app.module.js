@@ -17,6 +17,7 @@ const github_module_1 = require("./github/github.module");
 const prisma_module_1 = require("./prisma/prisma.module");
 const config_1 = require("@nestjs/config");
 const repositories_module_1 = require("./repositories/repositories.module");
+const indexing_module_1 = require("./indexing/indexing.module");
 _a = (0, observe_1.createObserveModule)(), exports.ObserveModule = _a.ObserveModule, exports.ObserveInstrument = _a.ObserveInstrument;
 let AppModule = class AppModule {
 };
@@ -36,6 +37,7 @@ exports.AppModule = AppModule = __decorate([
             github_module_1.GithubModule,
             prisma_module_1.PrismaModule,
             repositories_module_1.RepositoriesModule,
+            indexing_module_1.IndexingModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

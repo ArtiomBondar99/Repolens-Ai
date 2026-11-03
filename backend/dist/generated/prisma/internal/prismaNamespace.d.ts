@@ -162,6 +162,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 export declare const ModelName: {
     readonly Repository: "Repository";
     readonly RepositoryFile: "RepositoryFile";
+    readonly CodeChunk: "CodeChunk";
 };
 export type ModelName = (typeof ModelName)[keyof typeof ModelName];
 export interface TypeMapCb<GlobalOmitOptions = {}> extends runtime.Types.Utils.Fn<{
@@ -174,7 +175,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         omit: GlobalOmitOptions;
     };
     meta: {
-        modelProps: "repository" | "repositoryFile";
+        modelProps: "repository" | "repositoryFile" | "codeChunk";
         txIsolationLevel: TransactionIsolationLevel;
     };
     model: {
@@ -326,6 +327,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
                 };
             };
         };
+        CodeChunk: {
+            payload: Prisma.$CodeChunkPayload<ExtArgs>;
+            fields: Prisma.CodeChunkFieldRefs;
+            operations: {
+                findUnique: {
+                    args: Prisma.CodeChunkFindUniqueArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$CodeChunkPayload> | null;
+                };
+                findUniqueOrThrow: {
+                    args: Prisma.CodeChunkFindUniqueOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$CodeChunkPayload>;
+                };
+                findFirst: {
+                    args: Prisma.CodeChunkFindFirstArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$CodeChunkPayload> | null;
+                };
+                findFirstOrThrow: {
+                    args: Prisma.CodeChunkFindFirstOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$CodeChunkPayload>;
+                };
+                findMany: {
+                    args: Prisma.CodeChunkFindManyArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$CodeChunkPayload>[];
+                };
+                create: {
+                    args: Prisma.CodeChunkCreateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$CodeChunkPayload>;
+                };
+                createMany: {
+                    args: Prisma.CodeChunkCreateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                createManyAndReturn: {
+                    args: Prisma.CodeChunkCreateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$CodeChunkPayload>[];
+                };
+                delete: {
+                    args: Prisma.CodeChunkDeleteArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$CodeChunkPayload>;
+                };
+                update: {
+                    args: Prisma.CodeChunkUpdateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$CodeChunkPayload>;
+                };
+                deleteMany: {
+                    args: Prisma.CodeChunkDeleteManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateMany: {
+                    args: Prisma.CodeChunkUpdateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateManyAndReturn: {
+                    args: Prisma.CodeChunkUpdateManyAndReturnArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$CodeChunkPayload>[];
+                };
+                upsert: {
+                    args: Prisma.CodeChunkUpsertArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$CodeChunkPayload>;
+                };
+                aggregate: {
+                    args: Prisma.CodeChunkAggregateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AggregateCodeChunk>;
+                };
+                groupBy: {
+                    args: Prisma.CodeChunkGroupByArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.CodeChunkGroupByOutputType>[];
+                };
+                count: {
+                    args: Prisma.CodeChunkCountArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.CodeChunkCountAggregateOutputType> | number;
+                };
+            };
+        };
     };
 } & {
     other: {
@@ -377,6 +452,16 @@ export declare const RepositoryFileScalarFieldEnum: {
     readonly createdAt: "createdAt";
 };
 export type RepositoryFileScalarFieldEnum = (typeof RepositoryFileScalarFieldEnum)[keyof typeof RepositoryFileScalarFieldEnum];
+export declare const CodeChunkScalarFieldEnum: {
+    readonly id: "id";
+    readonly repositoryFileId: "repositoryFileId";
+    readonly chunkIndex: "chunkIndex";
+    readonly content: "content";
+    readonly startLine: "startLine";
+    readonly endLine: "endLine";
+    readonly createdAt: "createdAt";
+};
+export type CodeChunkScalarFieldEnum = (typeof CodeChunkScalarFieldEnum)[keyof typeof CodeChunkScalarFieldEnum];
 export declare const SortOrder: {
     readonly asc: "asc";
     readonly desc: "desc";
@@ -430,6 +515,7 @@ export type PrismaClientOptions = PrismaClientOptionsWithAccelerateUrl | PrismaC
 export type GlobalOmitConfig = {
     repository?: Prisma.RepositoryOmit;
     repositoryFile?: Prisma.RepositoryFileOmit;
+    codeChunk?: Prisma.CodeChunkOmit;
 };
 export type LogLevel = 'info' | 'query' | 'warn' | 'error';
 export type LogDefinition = {

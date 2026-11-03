@@ -33,7 +33,7 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.NullsOrder = exports.QueryMode = exports.SortOrder = exports.RepositoryFileScalarFieldEnum = exports.RepositoryScalarFieldEnum = exports.TransactionIsolationLevel = exports.ModelName = exports.AnyNull = exports.JsonNull = exports.DbNull = exports.NullTypes = exports.Decimal = void 0;
+exports.NullsOrder = exports.QueryMode = exports.SortOrder = exports.CodeChunkScalarFieldEnum = exports.RepositoryFileScalarFieldEnum = exports.RepositoryScalarFieldEnum = exports.TransactionIsolationLevel = exports.ModelName = exports.AnyNull = exports.JsonNull = exports.DbNull = exports.NullTypes = exports.Decimal = void 0;
 const runtime = __importStar(require("@prisma/client/runtime/index-browser"));
 exports.Decimal = runtime.Decimal;
 exports.NullTypes = {
@@ -46,7 +46,8 @@ exports.JsonNull = runtime.JsonNull;
 exports.AnyNull = runtime.AnyNull;
 exports.ModelName = {
     Repository: 'Repository',
-    RepositoryFile: 'RepositoryFile'
+    RepositoryFile: 'RepositoryFile',
+    CodeChunk: 'CodeChunk'
 };
 exports.TransactionIsolationLevel = runtime.makeStrictEnum({
     ReadUncommitted: 'ReadUncommitted',
@@ -70,6 +71,15 @@ exports.RepositoryFileScalarFieldEnum = {
     path: 'path',
     sha: 'sha',
     size: 'size',
+    createdAt: 'createdAt'
+};
+exports.CodeChunkScalarFieldEnum = {
+    id: 'id',
+    repositoryFileId: 'repositoryFileId',
+    chunkIndex: 'chunkIndex',
+    content: 'content',
+    startLine: 'startLine',
+    endLine: 'endLine',
     createdAt: 'createdAt'
 };
 exports.SortOrder = {

@@ -125,6 +125,7 @@ export type RepositoryFileWhereInput = {
     size?: Prisma.IntNullableFilter<"RepositoryFile"> | number | null;
     createdAt?: Prisma.DateTimeFilter<"RepositoryFile"> | Date | string;
     repository?: Prisma.XOR<Prisma.RepositoryScalarRelationFilter, Prisma.RepositoryWhereInput>;
+    chunks?: Prisma.CodeChunkListRelationFilter;
 };
 export type RepositoryFileOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -134,6 +135,7 @@ export type RepositoryFileOrderByWithRelationInput = {
     size?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     repository?: Prisma.RepositoryOrderByWithRelationInput;
+    chunks?: Prisma.CodeChunkOrderByRelationAggregateInput;
 };
 export type RepositoryFileWhereUniqueInput = Prisma.AtLeast<{
     id?: string;
@@ -147,6 +149,7 @@ export type RepositoryFileWhereUniqueInput = Prisma.AtLeast<{
     size?: Prisma.IntNullableFilter<"RepositoryFile"> | number | null;
     createdAt?: Prisma.DateTimeFilter<"RepositoryFile"> | Date | string;
     repository?: Prisma.XOR<Prisma.RepositoryScalarRelationFilter, Prisma.RepositoryWhereInput>;
+    chunks?: Prisma.CodeChunkListRelationFilter;
 }, "id" | "repositoryId_path">;
 export type RepositoryFileOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -179,6 +182,7 @@ export type RepositoryFileCreateInput = {
     size?: number | null;
     createdAt?: Date | string;
     repository: Prisma.RepositoryCreateNestedOneWithoutFilesInput;
+    chunks?: Prisma.CodeChunkCreateNestedManyWithoutRepositoryFileInput;
 };
 export type RepositoryFileUncheckedCreateInput = {
     id?: string;
@@ -187,6 +191,7 @@ export type RepositoryFileUncheckedCreateInput = {
     sha: string;
     size?: number | null;
     createdAt?: Date | string;
+    chunks?: Prisma.CodeChunkUncheckedCreateNestedManyWithoutRepositoryFileInput;
 };
 export type RepositoryFileUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -195,6 +200,7 @@ export type RepositoryFileUpdateInput = {
     size?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     repository?: Prisma.RepositoryUpdateOneRequiredWithoutFilesNestedInput;
+    chunks?: Prisma.CodeChunkUpdateManyWithoutRepositoryFileNestedInput;
 };
 export type RepositoryFileUncheckedUpdateInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -203,6 +209,7 @@ export type RepositoryFileUncheckedUpdateInput = {
     sha?: Prisma.StringFieldUpdateOperationsInput | string;
     size?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    chunks?: Prisma.CodeChunkUncheckedUpdateManyWithoutRepositoryFileNestedInput;
 };
 export type RepositoryFileCreateManyInput = {
     id?: string;
@@ -269,6 +276,10 @@ export type RepositoryFileMinOrderByAggregateInput = {
 export type RepositoryFileSumOrderByAggregateInput = {
     size?: Prisma.SortOrder;
 };
+export type RepositoryFileScalarRelationFilter = {
+    is?: Prisma.RepositoryFileWhereInput;
+    isNot?: Prisma.RepositoryFileWhereInput;
+};
 export type RepositoryFileCreateNestedManyWithoutRepositoryInput = {
     create?: Prisma.XOR<Prisma.RepositoryFileCreateWithoutRepositoryInput, Prisma.RepositoryFileUncheckedCreateWithoutRepositoryInput> | Prisma.RepositoryFileCreateWithoutRepositoryInput[] | Prisma.RepositoryFileUncheckedCreateWithoutRepositoryInput[];
     connectOrCreate?: Prisma.RepositoryFileCreateOrConnectWithoutRepositoryInput | Prisma.RepositoryFileCreateOrConnectWithoutRepositoryInput[];
@@ -314,12 +325,25 @@ export type NullableIntFieldUpdateOperationsInput = {
     multiply?: number;
     divide?: number;
 };
+export type RepositoryFileCreateNestedOneWithoutChunksInput = {
+    create?: Prisma.XOR<Prisma.RepositoryFileCreateWithoutChunksInput, Prisma.RepositoryFileUncheckedCreateWithoutChunksInput>;
+    connectOrCreate?: Prisma.RepositoryFileCreateOrConnectWithoutChunksInput;
+    connect?: Prisma.RepositoryFileWhereUniqueInput;
+};
+export type RepositoryFileUpdateOneRequiredWithoutChunksNestedInput = {
+    create?: Prisma.XOR<Prisma.RepositoryFileCreateWithoutChunksInput, Prisma.RepositoryFileUncheckedCreateWithoutChunksInput>;
+    connectOrCreate?: Prisma.RepositoryFileCreateOrConnectWithoutChunksInput;
+    upsert?: Prisma.RepositoryFileUpsertWithoutChunksInput;
+    connect?: Prisma.RepositoryFileWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.RepositoryFileUpdateToOneWithWhereWithoutChunksInput, Prisma.RepositoryFileUpdateWithoutChunksInput>, Prisma.RepositoryFileUncheckedUpdateWithoutChunksInput>;
+};
 export type RepositoryFileCreateWithoutRepositoryInput = {
     id?: string;
     path: string;
     sha: string;
     size?: number | null;
     createdAt?: Date | string;
+    chunks?: Prisma.CodeChunkCreateNestedManyWithoutRepositoryFileInput;
 };
 export type RepositoryFileUncheckedCreateWithoutRepositoryInput = {
     id?: string;
@@ -327,6 +351,7 @@ export type RepositoryFileUncheckedCreateWithoutRepositoryInput = {
     sha: string;
     size?: number | null;
     createdAt?: Date | string;
+    chunks?: Prisma.CodeChunkUncheckedCreateNestedManyWithoutRepositoryFileInput;
 };
 export type RepositoryFileCreateOrConnectWithoutRepositoryInput = {
     where: Prisma.RepositoryFileWhereUniqueInput;
@@ -360,6 +385,51 @@ export type RepositoryFileScalarWhereInput = {
     size?: Prisma.IntNullableFilter<"RepositoryFile"> | number | null;
     createdAt?: Prisma.DateTimeFilter<"RepositoryFile"> | Date | string;
 };
+export type RepositoryFileCreateWithoutChunksInput = {
+    id?: string;
+    path: string;
+    sha: string;
+    size?: number | null;
+    createdAt?: Date | string;
+    repository: Prisma.RepositoryCreateNestedOneWithoutFilesInput;
+};
+export type RepositoryFileUncheckedCreateWithoutChunksInput = {
+    id?: string;
+    repositoryId: string;
+    path: string;
+    sha: string;
+    size?: number | null;
+    createdAt?: Date | string;
+};
+export type RepositoryFileCreateOrConnectWithoutChunksInput = {
+    where: Prisma.RepositoryFileWhereUniqueInput;
+    create: Prisma.XOR<Prisma.RepositoryFileCreateWithoutChunksInput, Prisma.RepositoryFileUncheckedCreateWithoutChunksInput>;
+};
+export type RepositoryFileUpsertWithoutChunksInput = {
+    update: Prisma.XOR<Prisma.RepositoryFileUpdateWithoutChunksInput, Prisma.RepositoryFileUncheckedUpdateWithoutChunksInput>;
+    create: Prisma.XOR<Prisma.RepositoryFileCreateWithoutChunksInput, Prisma.RepositoryFileUncheckedCreateWithoutChunksInput>;
+    where?: Prisma.RepositoryFileWhereInput;
+};
+export type RepositoryFileUpdateToOneWithWhereWithoutChunksInput = {
+    where?: Prisma.RepositoryFileWhereInput;
+    data: Prisma.XOR<Prisma.RepositoryFileUpdateWithoutChunksInput, Prisma.RepositoryFileUncheckedUpdateWithoutChunksInput>;
+};
+export type RepositoryFileUpdateWithoutChunksInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    path?: Prisma.StringFieldUpdateOperationsInput | string;
+    sha?: Prisma.StringFieldUpdateOperationsInput | string;
+    size?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    repository?: Prisma.RepositoryUpdateOneRequiredWithoutFilesNestedInput;
+};
+export type RepositoryFileUncheckedUpdateWithoutChunksInput = {
+    id?: Prisma.StringFieldUpdateOperationsInput | string;
+    repositoryId?: Prisma.StringFieldUpdateOperationsInput | string;
+    path?: Prisma.StringFieldUpdateOperationsInput | string;
+    sha?: Prisma.StringFieldUpdateOperationsInput | string;
+    size?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
 export type RepositoryFileCreateManyRepositoryInput = {
     id?: string;
     path: string;
@@ -373,6 +443,7 @@ export type RepositoryFileUpdateWithoutRepositoryInput = {
     sha?: Prisma.StringFieldUpdateOperationsInput | string;
     size?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    chunks?: Prisma.CodeChunkUpdateManyWithoutRepositoryFileNestedInput;
 };
 export type RepositoryFileUncheckedUpdateWithoutRepositoryInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -380,6 +451,7 @@ export type RepositoryFileUncheckedUpdateWithoutRepositoryInput = {
     sha?: Prisma.StringFieldUpdateOperationsInput | string;
     size?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    chunks?: Prisma.CodeChunkUncheckedUpdateManyWithoutRepositoryFileNestedInput;
 };
 export type RepositoryFileUncheckedUpdateManyWithoutRepositoryInput = {
     id?: Prisma.StringFieldUpdateOperationsInput | string;
@@ -387,6 +459,18 @@ export type RepositoryFileUncheckedUpdateManyWithoutRepositoryInput = {
     sha?: Prisma.StringFieldUpdateOperationsInput | string;
     size?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+export type RepositoryFileCountOutputType = {
+    chunks: number;
+};
+export type RepositoryFileCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    chunks?: boolean | RepositoryFileCountOutputTypeCountChunksArgs;
+};
+export type RepositoryFileCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.RepositoryFileCountOutputTypeSelect<ExtArgs> | null;
+};
+export type RepositoryFileCountOutputTypeCountChunksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.CodeChunkWhereInput;
 };
 export type RepositoryFileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -396,6 +480,8 @@ export type RepositoryFileSelect<ExtArgs extends runtime.Types.Extensions.Intern
     size?: boolean;
     createdAt?: boolean;
     repository?: boolean | Prisma.RepositoryDefaultArgs<ExtArgs>;
+    chunks?: boolean | Prisma.RepositoryFile$chunksArgs<ExtArgs>;
+    _count?: boolean | Prisma.RepositoryFileCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["repositoryFile"]>;
 export type RepositoryFileSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -426,6 +512,8 @@ export type RepositoryFileSelectScalar = {
 export type RepositoryFileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "repositoryId" | "path" | "sha" | "size" | "createdAt", ExtArgs["result"]["repositoryFile"]>;
 export type RepositoryFileInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     repository?: boolean | Prisma.RepositoryDefaultArgs<ExtArgs>;
+    chunks?: boolean | Prisma.RepositoryFile$chunksArgs<ExtArgs>;
+    _count?: boolean | Prisma.RepositoryFileCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type RepositoryFileIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     repository?: boolean | Prisma.RepositoryDefaultArgs<ExtArgs>;
@@ -437,6 +525,7 @@ export type $RepositoryFilePayload<ExtArgs extends runtime.Types.Extensions.Inte
     name: "RepositoryFile";
     objects: {
         repository: Prisma.$RepositoryPayload<ExtArgs>;
+        chunks: Prisma.$CodeChunkPayload<ExtArgs>[];
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: string;
@@ -498,6 +587,7 @@ export interface RepositoryFileDelegate<ExtArgs extends runtime.Types.Extensions
 export interface Prisma__RepositoryFileClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise";
     repository<T extends Prisma.RepositoryDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.RepositoryDefaultArgs<ExtArgs>>): Prisma.Prisma__RepositoryClient<runtime.Types.Result.GetResult<Prisma.$RepositoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
+    chunks<T extends Prisma.RepositoryFile$chunksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.RepositoryFile$chunksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CodeChunkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): runtime.Types.Utils.JsPromise<TResult1 | TResult2>;
     catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): runtime.Types.Utils.JsPromise<T | TResult>;
     finally(onfinally?: (() => void) | undefined | null): runtime.Types.Utils.JsPromise<T>;
@@ -609,6 +699,17 @@ export type RepositoryFileDeleteArgs<ExtArgs extends runtime.Types.Extensions.In
 export type RepositoryFileDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     where?: Prisma.RepositoryFileWhereInput;
     limit?: number;
+};
+export type RepositoryFile$chunksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    select?: Prisma.CodeChunkSelect<ExtArgs> | null;
+    omit?: Prisma.CodeChunkOmit<ExtArgs> | null;
+    include?: Prisma.CodeChunkInclude<ExtArgs> | null;
+    where?: Prisma.CodeChunkWhereInput;
+    orderBy?: Prisma.CodeChunkOrderByWithRelationInput | Prisma.CodeChunkOrderByWithRelationInput[];
+    cursor?: Prisma.CodeChunkWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.CodeChunkScalarFieldEnum | Prisma.CodeChunkScalarFieldEnum[];
 };
 export type RepositoryFileDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     select?: Prisma.RepositoryFileSelect<ExtArgs> | null;
