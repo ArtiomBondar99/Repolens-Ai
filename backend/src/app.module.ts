@@ -8,6 +8,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { ConfigModule } from '@nestjs/config';
 import { RepositoriesModule } from './repositories/repositories.module';
 import { IndexingModule } from './indexing/indexing.module';
+import { EmbeddingsModule } from './embeddings/embeddings.module';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
@@ -28,6 +29,7 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
     PrismaModule,
     RepositoriesModule,
     IndexingModule,
+    EmbeddingsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

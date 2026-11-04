@@ -49,6 +49,7 @@ model CodeChunk {
   content          String
   startLine        Int
   endLine          Int
+  embedding        Unsupported("vector(1536)")?
   createdAt        DateTime       @default(now())
 
   @@unique([repositoryFileId, chunkIndex])

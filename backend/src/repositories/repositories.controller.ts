@@ -4,6 +4,7 @@ import {
   Get,
   Param,
   Post,
+  Query,
   ValidationPipe,
 } from '@nestjs/common';
 import { RepositoriesService } from './repositories.service';
@@ -47,6 +48,23 @@ export class RepositoriesController {
     return this.repositoriesService.getFileContent(
       repositoryId,
       fileId,
+    );
+  }
+
+  @Get(':id/files')
+  getRepositoryFiles(@Param('id') id: string) {
+    return this.repositoriesService.getRepositoryFiles(id);
+  }
+
+
+  @Get(':id/search')
+  searchCode(
+    @Param('id') repositoryId: string,
+    @Query('q') query: string,
+  ) {
+    return this.repositoriesService.searchCode(
+      repositoryId,
+      query,
     );
   }
 }

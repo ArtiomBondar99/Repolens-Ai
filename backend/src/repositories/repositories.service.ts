@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { GithubService } from '../github/github.service';
 import { PrismaService } from '../prisma/prisma.service';
 
@@ -115,6 +119,94 @@ export class RepositoriesService {
       sha: blob.sha,
       size: blob.size,
       content: blob.content,
+    };
+  }
+
+  async getRepositoryFiles(repositoryId: string) {
+    const repository = await this.prisma.repository.findUnique({
+      where: {
+        id: repositoryId,
+      },
+    });
+
+    if (!repository) {
+      throw new NotFoundException('Repository not found');
+    }
+
+    return this.prisma.repositoryFile.findMany({
+      where: {
+        repositoryId: repositoryId,
+      },
+      select: {
+        id: true,
+        path: true,
+        sha: true,
+        size: true,
+      },
+      orderBy: {
+        path: 'asc',
+      },
+      take: 100,
+    });
+  }
+
+  async searchCode(repositoryId: string, query: string) {
+    const searchTerm = query?.trim();
+
+    if (!searchTerm || searchTerm.length > 100) {
+      throw new BadRequestException(
+        'Search query must contain 1 to 100 characters',
+      );
+    }
+
+    const repository = await this.prisma.repository.findUnique({
+      where: { id: repositoryId },
+      select: { id: true },
+    });
+
+    if (!repository) {
+      throw new NotFoundException('Repository not found');
+    }
+
+    const chunks = await this.prisma.codeChunk.findMany({
+      where: {
+        repositoryFile: {
+          repositoryId,
+        },
+        content: {
+          contains: searchTerm,
+          mode: 'insensitive',
+        },
+      },
+      select: {
+        id: true,
+        chunkIndex: true,
+        content: true,
+        startLine: true,
+        endLine: true,
+        repositoryFile: {
+          select: {
+            path: true,
+          },
+        },
+      },
+      orderBy: [
+        { repositoryFile: { path: 'asc' } },
+        { chunkIndex: 'asc' },
+      ],
+      take: 20,
+    });
+
+    return {
+      query: searchTerm,
+      totalReturned: chunks.length,
+      results: chunks.map((chunk) => ({
+        chunkId: chunk.id,
+        path: chunk.repositoryFile.path,
+        startLine: chunk.startLine,
+        endLine: chunk.endLine,
+        content: chunk.content,
+      })),
     };
   }
 }
