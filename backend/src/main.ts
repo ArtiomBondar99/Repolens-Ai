@@ -6,6 +6,9 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     instrument: ObserveInstrument,
   });
+  app.enableCors({
+    origin: 'http://localhost:5173',
+  });
   app.enableShutdownHooks();
 
   const port = process.env.PORT || 3000;

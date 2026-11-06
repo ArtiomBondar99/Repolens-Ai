@@ -33,6 +33,12 @@ let RepositoriesController = class RepositoriesController {
     getFileContent(repositoryId, fileId) {
         return this.repositoriesService.getFileContent(repositoryId, fileId);
     }
+    getRepositoryFiles(id) {
+        return this.repositoriesService.getRepositoryFiles(id);
+    }
+    searchCode(repositoryId, query) {
+        return this.repositoriesService.searchCode(repositoryId, query);
+    }
 };
 exports.RepositoriesController = RepositoriesController;
 __decorate([
@@ -66,6 +72,21 @@ __decorate([
     __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", void 0)
 ], RepositoriesController.prototype, "getFileContent", null);
+__decorate([
+    (0, common_1.Get)(':id/files'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], RepositoriesController.prototype, "getRepositoryFiles", null);
+__decorate([
+    (0, common_1.Get)(':id/search'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Query)('q')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", void 0)
+], RepositoriesController.prototype, "searchCode", null);
 exports.RepositoriesController = RepositoriesController = __decorate([
     (0, common_1.Controller)('repositories'),
     __metadata("design:paramtypes", [repositories_service_1.RepositoriesService])

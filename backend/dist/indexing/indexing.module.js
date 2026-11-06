@@ -11,6 +11,7 @@ const common_1 = require("@nestjs/common");
 const prisma_module_1 = require("../prisma/prisma.module");
 const repositories_module_1 = require("../repositories/repositories.module");
 const code_chunker_service_1 = require("./code-chunker/code-chunker.service");
+const embedding_service_1 = require("./embedding/embedding.service");
 const indexing_service_1 = require("./indexing.service");
 const indexing_controller_1 = require("./indexing.controller");
 let IndexingModule = class IndexingModule {
@@ -20,7 +21,7 @@ exports.IndexingModule = IndexingModule = __decorate([
     (0, common_1.Module)({
         imports: [prisma_module_1.PrismaModule, repositories_module_1.RepositoriesModule],
         controllers: [indexing_controller_1.IndexingController],
-        providers: [code_chunker_service_1.CodeChunkerService, indexing_service_1.IndexingService],
+        providers: [code_chunker_service_1.CodeChunkerService, embedding_service_1.EmbeddingService, indexing_service_1.IndexingService],
     })
 ], IndexingModule);
 //# sourceMappingURL=indexing.module.js.map

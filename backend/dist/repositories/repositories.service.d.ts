@@ -5,20 +5,20 @@ export declare class RepositoriesService {
     private readonly prisma;
     constructor(githubService: GithubService, prisma: PrismaService);
     saveRepository(owner: string, repo: string): Promise<{
-        id: string;
         owner: string;
-        name: string;
+        id: string;
         fullName: string;
+        name: string;
         url: string;
         defaultBranch: string;
         createdAt: Date;
         updatedAt: Date;
     }>;
     findAll(): Promise<{
-        id: string;
         owner: string;
-        name: string;
+        id: string;
         fullName: string;
+        name: string;
         url: string;
         defaultBranch: string;
         createdAt: Date;
@@ -34,5 +34,22 @@ export declare class RepositoriesService {
         sha: string;
         size: number;
         content: string;
+    }>;
+    getRepositoryFiles(repositoryId: string): Promise<{
+        sha: string;
+        id: string;
+        path: string;
+        size: number | null;
+    }[]>;
+    searchCode(repositoryId: string, query: string): Promise<{
+        query: string;
+        totalReturned: number;
+        results: {
+            chunkId: string;
+            path: string;
+            startLine: number;
+            endLine: number;
+            content: string;
+        }[];
     }>;
 }
