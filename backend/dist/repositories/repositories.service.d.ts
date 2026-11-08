@@ -5,9 +5,9 @@ export declare class RepositoriesService {
     private readonly prisma;
     constructor(githubService: GithubService, prisma: PrismaService);
     saveRepository(owner: string, repo: string): Promise<{
-        owner: string;
         id: string;
         fullName: string;
+        owner: string;
         name: string;
         url: string;
         defaultBranch: string;
@@ -15,9 +15,9 @@ export declare class RepositoriesService {
         updatedAt: Date;
     }>;
     findAll(): Promise<{
-        owner: string;
         id: string;
         fullName: string;
+        owner: string;
         name: string;
         url: string;
         defaultBranch: string;
@@ -36,9 +36,9 @@ export declare class RepositoriesService {
         content: string;
     }>;
     getRepositoryFiles(repositoryId: string): Promise<{
-        sha: string;
         id: string;
         path: string;
+        sha: string;
         size: number | null;
     }[]>;
     searchCode(repositoryId: string, query: string): Promise<{

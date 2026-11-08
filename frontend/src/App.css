@@ -238,11 +238,34 @@
   }
 
   .search-result {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
     margin-top: 12px;
     padding: 12px;
+    text-align: left;
+    background: #161b22;
+    color: #e6edf3;
     border: 1px solid #30363d;
     border-radius: 8px;
-    background: #161b22;
+    cursor: pointer;
+  }
+
+  .search-result:hover {
+    background: #21262d;
+    border-color: #58a6ff;
+  }
+
+  .search-result span {
+    color: #8b949e;
+    font-size: 12px;
+  }
+
+  .search-result code {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    font-size: 11px;
   }
 
   .search-result strong {

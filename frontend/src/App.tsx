@@ -29,6 +29,7 @@ interface FileContent {
 
 interface SearchResult {
   chunkId: string;
+  fileId: string;
   path: string;
   startLine: number;
   endLine: number;
@@ -140,10 +141,7 @@ function App() {
     }
   }
 
-  async function loadFileContent(
-    file: RepositoryFile,
-    linesToHighlight: number[] = []
-  ) {
+  async function loadFileContent(fileId: string) {
     if (!selectedRepo) {
       return;
     }
@@ -151,11 +149,10 @@ function App() {
     setSelectedFile(null);
     setFileLoading(true);
     setFileError('');
-    setHighlightedLines(linesToHighlight);
 
     try {
       const response = await fetch(
-        `http://localhost:3000/repositories/${selectedRepo.id}/files/${file.id}/content`
+        `http://localhost:3000/repositories/${selectedRepo.id}/files/${fileId}/content`
       );
 
       if (!response.ok) {
@@ -171,7 +168,6 @@ function App() {
       setFileLoading(false);
     }
   }
-
   async function searchCode() {
     if (!selectedRepo) {
       return;
@@ -287,32 +283,20 @@ function App() {
               )}
 
               {searchResults.map((result) => (
-                <div
-                  className="search-result"
+                <button
                   key={result.chunkId}
-                  role="button"
-                  tabIndex={0}
-                  onClick={() => openSearchResult(result)}
-                  onKeyDown={(event) => {
-                    if (event.key === 'Enter' || event.key === ' ') {
-                      event.preventDefault();
-                      openSearchResult(result);
-                    }
-                  }}
+                  type="button"
+                  className="search-result"
+                  onClick={() => void loadFileContent(result.fileId)}
                 >
                   <strong>{result.path}</strong>
 
-                  <p>
+                  <span>
                     Lines {result.startLine}–{result.endLine}
-                  </p>
+                  </span>
 
-                  <pre>
-                    {findMatchLines(result, searchedQuery)
-                      .slice(0, 3)
-                      .map((match) => `${match.lineNumber}: ${match.text.trim()}`)
-                      .join('\n') || result.content.slice(0, 180)}
-                  </pre>
-                </div>
+                  <code>{result.content.slice(0, 180)}</code>
+                </button>
               ))}
             </section>
           )}

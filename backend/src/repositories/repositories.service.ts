@@ -186,6 +186,7 @@ export class RepositoriesService {
         endLine: true,
         repositoryFile: {
           select: {
+            id: true,
             path: true,
           },
         },
