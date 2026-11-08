@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './App.css';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
@@ -71,20 +71,26 @@ function App() {
   const [hasSearched, setHasSearched] = useState(false);
 
   const [searchedQuery, setSearchedQuery] = useState('');
-  const [highlightedLines, setHighlightedLines] = useState<number[]>([]);
+  const [highlightedLines, setHighlightedLines] = useState<{
+    start: number;
+    end: number;
+  } | null>(null);
+
+  const codeViewerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (!selectedFile || highlightedLines.length === 0) {
+    if (!selectedFile || !highlightedLines) {
       return;
     }
 
-    const frame = requestAnimationFrame(() => {
-      document
-        .querySelector('.editor-panel .highlighted-line')
-        ?.scrollIntoView({ block: 'center' });
-    });
+    const targetLine = codeViewerRef.current?.querySelector(
+      `[data-search-line="${highlightedLines.start}"]`
+    );
 
-    return () => cancelAnimationFrame(frame);
+    targetLine?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center',
+    });
   }, [selectedFile, highlightedLines]);
 
   useEffect(() => {
@@ -120,7 +126,7 @@ function App() {
     setSearchError('');
     setHasSearched(false);
     setSearchedQuery('');
-    setHighlightedLines([]);
+    setHighlightedLines(null);
 
     try {
       const response = await fetch(
@@ -143,16 +149,16 @@ function App() {
 
   async function loadFileContent(
     fileId: string,
-    linesToHighlight: number[] = []
+    lines: { start: number; end: number } | null = null,
   ) {
     if (!selectedRepo) {
       return;
     }
 
+    setHighlightedLines(lines);
     setSelectedFile(null);
     setFileLoading(true);
     setFileError('');
-    setHighlightedLines(linesToHighlight);
 
     try {
       const response = await fetch(
@@ -164,7 +170,6 @@ function App() {
       }
 
       const data: FileContent = await response.json();
-
       setSelectedFile(data);
     } catch {
       setFileError('Could not load file content');
@@ -210,17 +215,6 @@ function App() {
     } finally {
       setSearchLoading(false);
     }
-  }
-
-  function openSearchResult(result: SearchResult) {
-    const matches = findMatchLines(result, searchedQuery);
-
-    const lines =
-      matches.length > 0
-        ? matches.map((match) => match.lineNumber)
-        : rangeOf(result.startLine, result.endLine);
-
-    void loadFileContent(result.fileId, lines);
   }
 
   return (
@@ -284,7 +278,12 @@ function App() {
                   key={result.chunkId}
                   type="button"
                   className="search-result"
-                  onClick={() => openSearchResult(result)}
+                  onClick={() =>
+                    void loadFileContent(result.fileId, {
+                      start: result.startLine,
+                      end: result.endLine,
+                    })
+                  }
                 >
                   <strong>{result.path}</strong>
 
@@ -336,7 +335,7 @@ function App() {
           {fileError && <p>{fileError}</p>}
 
           {selectedFile && !fileLoading && (
-            <div className="editor-content">
+            <div className="editor-content" ref={codeViewerRef}>
               <div className="editor-tab">
                 {selectedFile.path}
               </div>
@@ -346,15 +345,23 @@ function App() {
                 style={oneDark}
                 showLineNumbers
                 wrapLines
-                lineProps={(lineNumber) =>
-                  highlightedLines.includes(lineNumber)
-                    ? {
-                      className: 'highlighted-line',
-                      style: { display: 'block' },
-                    }
-                    : { style: { display: 'block' } }
-                }
                 wrapLongLines={false}
+                lineProps={(lineNumber) => {
+                  const isHighlighted =
+                    highlightedLines !== null &&
+                    lineNumber >= highlightedLines.start &&
+                    lineNumber <= highlightedLines.end;
+
+                  return {
+                    'data-search-line': String(lineNumber),
+                    style: {
+                      display: 'block',
+                      backgroundColor: isHighlighted
+                        ? 'rgba(234, 179, 8, 0.20)'
+                        : 'transparent',
+                    },
+                  };
+                }}
                 customStyle={{
                   margin: 0,
                   borderRadius: 0,
@@ -382,10 +389,6 @@ function findMatchLines(result: SearchResult, query: string): MatchLine[] {
     .split('\n')
     .map((text, index) => ({ lineNumber: result.startLine + index, text }))
     .filter((line) => line.text.toLowerCase().includes(needle));
-}
-
-function rangeOf(start: number, end: number): number[] {
-  return Array.from({ length: end - start + 1 }, (_, index) => start + index);
 }
 
 function detectLanguage(path: string): string {

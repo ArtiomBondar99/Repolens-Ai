@@ -167,11 +167,6 @@
   overflow: hidden;
 }
 
-.highlighted-line {
-  background: rgba(56, 139, 253, 0.18);
-  box-shadow: inset 3px 0 0 #58a6ff;
-}
-
 .editor-panel {
   flex: 1;
   min-width: 0;
