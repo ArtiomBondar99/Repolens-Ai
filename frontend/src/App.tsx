@@ -56,6 +56,7 @@ function App() {
   const [files, setFiles] = useState<RepositoryFile[]>([]);
   const [filesLoading, setFilesLoading] = useState(false);
   const [filesError, setFilesError] = useState('');
+  const fileRequestRef = useRef<AbortController | null>(null);
 
   const [selectedFile, setSelectedFile] =
     useState<FileContent | null>(null);
@@ -77,6 +78,10 @@ function App() {
   } | null>(null);
 
   const codeViewerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    return () => fileRequestRef.current?.abort();
+  }, []);
 
   useEffect(() => {
     if (!selectedFile || !highlightedLines) {
@@ -115,18 +120,22 @@ function App() {
   }, []);
 
   async function loadFiles(repo: Repository) {
+    fileRequestRef.current?.abort();
+
+    setSelectedFile(null);
+    setHighlightedLines(null);
+    setFileLoading(false);
+    setFileError('');
+
     setSelectedRepo(repo);
     setFiles([]);
     setFilesLoading(true);
     setFilesError('');
-    setSelectedFile(null);
-    setFileError('');
     setSearchQuery('');
     setSearchResults([]);
     setSearchError('');
     setHasSearched(false);
     setSearchedQuery('');
-    setHighlightedLines(null);
 
     try {
       const response = await fetch(
@@ -155,14 +164,20 @@ function App() {
       return;
     }
 
-    setHighlightedLines(lines);
+    fileRequestRef.current?.abort();
+
+    const controller = new AbortController();
+    fileRequestRef.current = controller;
+
     setSelectedFile(null);
+    setHighlightedLines(lines);
     setFileLoading(true);
     setFileError('');
 
     try {
       const response = await fetch(
-        `http://localhost:3000/repositories/${selectedRepo.id}/files/${fileId}/content`
+        `http://localhost:3000/repositories/${selectedRepo.id}/files/${fileId}/content`,
+        { signal: controller.signal },
       );
 
       if (!response.ok) {
@@ -170,11 +185,24 @@ function App() {
       }
 
       const data: FileContent = await response.json();
+
+      if (controller.signal.aborted) {
+        return;
+      }
+
       setSelectedFile(data);
     } catch {
-      setFileError('Could not load file content');
+      if (!controller.signal.aborted) {
+        setFileError('Could not load file content');
+      }
     } finally {
-      setFileLoading(false);
+      if (!controller.signal.aborted) {
+        setFileLoading(false);
+      }
+
+      if (fileRequestRef.current === controller) {
+        fileRequestRef.current = null;
+      }
     }
   }
   async function searchCode() {
