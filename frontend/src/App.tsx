@@ -41,9 +41,9 @@ interface SearchResponse {
   results: SearchResult[];
 }
 
-interface LineRange {
-  start: number;
-  end: number;
+interface MatchLine {
+  lineNumber: number;
+  text: string;
 }
 
 function App() {
@@ -69,11 +69,11 @@ function App() {
   const [searchError, setSearchError] = useState('');
   const [hasSearched, setHasSearched] = useState(false);
 
-  const [highlightedRange, setHighlightedRange] =
-    useState<LineRange | null>(null);
+  const [searchedQuery, setSearchedQuery] = useState('');
+  const [highlightedLines, setHighlightedLines] = useState<number[]>([]);
 
   useEffect(() => {
-    if (!selectedFile || !highlightedRange) {
+    if (!selectedFile || highlightedLines.length === 0) {
       return;
     }
 
@@ -84,7 +84,7 @@ function App() {
     });
 
     return () => cancelAnimationFrame(frame);
-  }, [selectedFile, highlightedRange]);
+  }, [selectedFile, highlightedLines]);
 
   useEffect(() => {
     async function loadRepositories() {
@@ -118,7 +118,8 @@ function App() {
     setSearchResults([]);
     setSearchError('');
     setHasSearched(false);
-    setHighlightedRange(null);
+    setSearchedQuery('');
+    setHighlightedLines([]);
 
     try {
       const response = await fetch(
@@ -141,7 +142,7 @@ function App() {
 
   async function loadFileContent(
     file: RepositoryFile,
-    range: LineRange | null = null
+    linesToHighlight: number[] = []
   ) {
     if (!selectedRepo) {
       return;
@@ -150,7 +151,7 @@ function App() {
     setSelectedFile(null);
     setFileLoading(true);
     setFileError('');
-    setHighlightedRange(range);
+    setHighlightedLines(linesToHighlight);
 
     try {
       const response = await fetch(
@@ -202,6 +203,7 @@ function App() {
       const data: SearchResponse = await response.json();
 
       setSearchResults(data.results);
+      setSearchedQuery(data.query);
       setHasSearched(true);
     } catch {
       setSearchError('Could not search repository code');
@@ -218,10 +220,14 @@ function App() {
       return;
     }
 
-    void loadFileContent(file, {
-      start: result.startLine,
-      end: result.endLine,
-    });
+    const matches = findMatchLines(result, searchedQuery);
+
+    const lines =
+      matches.length > 0
+        ? matches.map((match) => match.lineNumber)
+        : rangeOf(result.startLine, result.endLine);
+
+    void loadFileContent(file, lines);
   }
 
   return (
@@ -300,7 +306,12 @@ function App() {
                     Lines {result.startLine}–{result.endLine}
                   </p>
 
-                  <pre>{result.content.slice(0, 180)}</pre>
+                  <pre>
+                    {findMatchLines(result, searchedQuery)
+                      .slice(0, 3)
+                      .map((match) => `${match.lineNumber}: ${match.text.trim()}`)
+                      .join('\n') || result.content.slice(0, 180)}
+                  </pre>
                 </div>
               ))}
             </section>
@@ -350,9 +361,7 @@ function App() {
                 showLineNumbers
                 wrapLines
                 lineProps={(lineNumber) =>
-                  highlightedRange &&
-                    lineNumber >= highlightedRange.start &&
-                    lineNumber <= highlightedRange.end
+                  highlightedLines.includes(lineNumber)
                     ? {
                       className: 'highlighted-line',
                       style: { display: 'block' },
@@ -374,6 +383,23 @@ function App() {
       </div>
     </div>
   );
+}
+
+function findMatchLines(result: SearchResult, query: string): MatchLine[] {
+  const needle = query.trim().toLowerCase();
+
+  if (!needle) {
+    return [];
+  }
+
+  return result.content
+    .split('\n')
+    .map((text, index) => ({ lineNumber: result.startLine + index, text }))
+    .filter((line) => line.text.toLowerCase().includes(needle));
+}
+
+function rangeOf(start: number, end: number): number[] {
+  return Array.from({ length: end - start + 1 }, (_, index) => start + index);
 }
 
 function detectLanguage(path: string): string {
