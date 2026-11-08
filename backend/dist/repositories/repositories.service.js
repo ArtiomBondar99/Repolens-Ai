@@ -175,6 +175,7 @@ let RepositoriesService = class RepositoriesService {
             totalReturned: chunks.length,
             results: chunks.map((chunk) => ({
                 chunkId: chunk.id,
+                fileId: chunk.repositoryFile.id,
                 path: chunk.repositoryFile.path,
                 startLine: chunk.startLine,
                 endLine: chunk.endLine,

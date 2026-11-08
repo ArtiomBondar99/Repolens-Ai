@@ -4,9 +4,9 @@ export declare class RepositoriesController {
     private readonly repositoriesService;
     constructor(repositoriesService: RepositoriesService);
     findAll(): Promise<{
-        owner: string;
         id: string;
         fullName: string;
+        owner: string;
         name: string;
         url: string;
         defaultBranch: string;
@@ -14,9 +14,9 @@ export declare class RepositoriesController {
         updatedAt: Date;
     }[]>;
     saveRepository(body: CreateRepositoryDto): Promise<{
-        owner: string;
         id: string;
         fullName: string;
+        owner: string;
         name: string;
         url: string;
         defaultBranch: string;
@@ -35,9 +35,9 @@ export declare class RepositoriesController {
         content: string;
     }>;
     getRepositoryFiles(id: string): Promise<{
-        sha: string;
         id: string;
         path: string;
+        sha: string;
         size: number | null;
     }[]>;
     searchCode(repositoryId: string, query: string): Promise<{
@@ -45,6 +45,7 @@ export declare class RepositoriesController {
         totalReturned: number;
         results: {
             chunkId: string;
+            fileId: string;
             path: string;
             startLine: number;
             endLine: number;

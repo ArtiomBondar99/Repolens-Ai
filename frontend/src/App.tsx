@@ -141,7 +141,10 @@ function App() {
     }
   }
 
-  async function loadFileContent(fileId: string) {
+  async function loadFileContent(
+    fileId: string,
+    linesToHighlight: number[] = []
+  ) {
     if (!selectedRepo) {
       return;
     }
@@ -149,6 +152,7 @@ function App() {
     setSelectedFile(null);
     setFileLoading(true);
     setFileError('');
+    setHighlightedLines(linesToHighlight);
 
     try {
       const response = await fetch(
@@ -209,13 +213,6 @@ function App() {
   }
 
   function openSearchResult(result: SearchResult) {
-    const file = files.find((f) => f.path === result.path);
-
-    if (!file) {
-      setFileError(`File not found: ${result.path}`);
-      return;
-    }
-
     const matches = findMatchLines(result, searchedQuery);
 
     const lines =
@@ -223,7 +220,7 @@ function App() {
         ? matches.map((match) => match.lineNumber)
         : rangeOf(result.startLine, result.endLine);
 
-    void loadFileContent(file, lines);
+    void loadFileContent(result.fileId, lines);
   }
 
   return (
@@ -287,7 +284,7 @@ function App() {
                   key={result.chunkId}
                   type="button"
                   className="search-result"
-                  onClick={() => void loadFileContent(result.fileId)}
+                  onClick={() => openSearchResult(result)}
                 >
                   <strong>{result.path}</strong>
 
@@ -295,7 +292,12 @@ function App() {
                     Lines {result.startLine}–{result.endLine}
                   </span>
 
-                  <code>{result.content.slice(0, 180)}</code>
+                  <code>
+                    {findMatchLines(result, searchedQuery)
+                      .slice(0, 3)
+                      .map((match) => `${match.lineNumber}: ${match.text.trim()}`)
+                      .join('\n') || result.content.slice(0, 180)}
+                  </code>
                 </button>
               ))}
             </section>
@@ -313,7 +315,7 @@ function App() {
                   <button
                     key={file.id}
                     className="sidebar-item file-item"
-                    onClick={() => loadFileContent(file)}
+                    onClick={() => loadFileContent(file.id)}
                   >
                     {file.path}
                   </button>
