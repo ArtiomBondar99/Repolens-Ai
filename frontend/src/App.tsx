@@ -27,6 +27,25 @@ interface FileContent {
   content: string;
 }
 
+interface SearchResult {
+  chunkId: string;
+  path: string;
+  startLine: number;
+  endLine: number;
+  content: string;
+}
+
+interface SearchResponse {
+  query: string;
+  totalReturned: number;
+  results: SearchResult[];
+}
+
+interface LineRange {
+  start: number;
+  end: number;
+}
+
 function App() {
   const [repositories, setRepositories] = useState<Repository[]>([]);
   const [loading, setLoading] = useState(true);
@@ -43,6 +62,29 @@ function App() {
   const [fileLoading, setFileLoading] = useState(false);
 
   const [fileError, setFileError] = useState('');
+
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
+  const [searchLoading, setSearchLoading] = useState(false);
+  const [searchError, setSearchError] = useState('');
+  const [hasSearched, setHasSearched] = useState(false);
+
+  const [highlightedRange, setHighlightedRange] =
+    useState<LineRange | null>(null);
+
+  useEffect(() => {
+    if (!selectedFile || !highlightedRange) {
+      return;
+    }
+
+    const frame = requestAnimationFrame(() => {
+      document
+        .querySelector('.editor-panel .highlighted-line')
+        ?.scrollIntoView({ block: 'center' });
+    });
+
+    return () => cancelAnimationFrame(frame);
+  }, [selectedFile, highlightedRange]);
 
   useEffect(() => {
     async function loadRepositories() {
@@ -72,6 +114,11 @@ function App() {
     setFilesError('');
     setSelectedFile(null);
     setFileError('');
+    setSearchQuery('');
+    setSearchResults([]);
+    setSearchError('');
+    setHasSearched(false);
+    setHighlightedRange(null);
 
     try {
       const response = await fetch(
@@ -92,7 +139,10 @@ function App() {
     }
   }
 
-  async function loadFileContent(file: RepositoryFile) {
+  async function loadFileContent(
+    file: RepositoryFile,
+    range: LineRange | null = null
+  ) {
     if (!selectedRepo) {
       return;
     }
@@ -100,6 +150,7 @@ function App() {
     setSelectedFile(null);
     setFileLoading(true);
     setFileError('');
+    setHighlightedRange(range);
 
     try {
       const response = await fetch(
@@ -120,12 +171,57 @@ function App() {
     }
   }
 
-  if (loading) {
-    return <p>Loading repositories...</p>;
+  async function searchCode() {
+    if (!selectedRepo) {
+      return;
+    }
+
+    const query = searchQuery.trim();
+
+    if (!query || query.length > 100) {
+      setSearchError('Enter 1 to 100 characters');
+      return;
+    }
+
+    setSearchLoading(true);
+    setSearchError('');
+    setSearchResults([]);
+    setHasSearched(false);
+
+    try {
+      const url =
+        `http://localhost:3000/repositories/${selectedRepo.id}/search` +
+        `?q=${encodeURIComponent(query)}`;
+
+      const response = await fetch(url);
+
+      if (!response.ok) {
+        throw new Error('Search request failed');
+      }
+
+      const data: SearchResponse = await response.json();
+
+      setSearchResults(data.results);
+      setHasSearched(true);
+    } catch {
+      setSearchError('Could not search repository code');
+    } finally {
+      setSearchLoading(false);
+    }
   }
 
-  if (error) {
-    return <p>{error}</p>;
+  function openSearchResult(result: SearchResult) {
+    const file = files.find((f) => f.path === result.path);
+
+    if (!file) {
+      setFileError(`File not found: ${result.path}`);
+      return;
+    }
+
+    void loadFileContent(file, {
+      start: result.startLine,
+      end: result.endLine,
+    });
   }
 
   return (
@@ -155,6 +251,60 @@ function App() {
               {repo.name}
             </button>
           ))}
+
+          {selectedRepo && (
+            <section className="search-section">
+              <h3>Search Code</h3>
+
+              <form
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  void searchCode();
+                }}
+              >
+                <input
+                  type="text"
+                  placeholder="Search code..."
+                  value={searchQuery}
+                  onChange={(event) => setSearchQuery(event.target.value)}
+                />
+
+                <button type="submit" disabled={searchLoading}>
+                  {searchLoading ? 'Searching...' : 'Search'}
+                </button>
+              </form>
+
+              {searchError && <p>{searchError}</p>}
+
+              {hasSearched && searchResults.length === 0 && (
+                <p>No matches found.</p>
+              )}
+
+              {searchResults.map((result) => (
+                <div
+                  className="search-result"
+                  key={result.chunkId}
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => openSearchResult(result)}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      event.preventDefault();
+                      openSearchResult(result);
+                    }
+                  }}
+                >
+                  <strong>{result.path}</strong>
+
+                  <p>
+                    Lines {result.startLine}–{result.endLine}
+                  </p>
+
+                  <pre>{result.content.slice(0, 180)}</pre>
+                </div>
+              ))}
+            </section>
+          )}
 
           {selectedRepo && (
             <>
@@ -198,6 +348,17 @@ function App() {
                 language={detectLanguage(selectedFile.path)}
                 style={oneDark}
                 showLineNumbers
+                wrapLines
+                lineProps={(lineNumber) =>
+                  highlightedRange &&
+                    lineNumber >= highlightedRange.start &&
+                    lineNumber <= highlightedRange.end
+                    ? {
+                      className: 'highlighted-line',
+                      style: { display: 'block' },
+                    }
+                    : { style: { display: 'block' } }
+                }
                 wrapLongLines={false}
                 customStyle={{
                   margin: 0,
